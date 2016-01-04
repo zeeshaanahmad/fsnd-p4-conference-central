@@ -1,4 +1,5 @@
-ConferenceCentral application for Udacity Full Stack Nanodegree - Project 4
+# ConferenceCentral 
+Application for Udacity Full Stack Nanodegree - Project 4
 
 ## Products
 - [App Engine][1]
