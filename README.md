@@ -1,4 +1,4 @@
-# ConferenceCentral 
+# ConferenceCentral
 Application for Udacity Full Stack Nanodegree - Project 4
 
 ## Products
@@ -126,7 +126,8 @@ So in order to handle this scenario, the implemented solution first filters the 
 
 ## Task 4 Explanation
 * ### `getFeaturedSpeaker`
-Gets the memcache entry for featured speaker which is updated when a new session is added and number of sessions of that user are more than 9n
+Gets the memcache entry for featured speaker which is updated when a new session is added and number of sessions of that user are more than one
+This has been implemented using task queue. Call to this task queue is made when the session is created.
 
 [1]: https://developers.google.com/appengine
 [2]: http://python.org

@@ -59,7 +59,12 @@ class SendSpeakerConfirmationEmailHandler(webapp2.RequestHandler):
         )
 
 # Sets memcache entry for announcement
-
+class SetFeaturedSpeakerHandler(webapp2.RequestHandler):
+    def post(self):
+        ConferenceApi._setFeaturedSpeaker(self,
+        self.request.get('websafeConferenceKey'),
+        self.request.get('websafeSpeakerKey'),
+        self.request.get('speaker'))
 
 class SetAnnouncementHandler(webapp2.RequestHandler):
 
@@ -76,4 +81,6 @@ app = webapp2.WSGIApplication([
         SendSessionConfirmationEmailHandler),
     ('/tasks/send_speaker_confirmation_email',
         SendSpeakerConfirmationEmailHandler),
+    ('/tasks/set_featured_speaker',
+        SetFeaturedSpeakerHandler),
 ], debug=True)

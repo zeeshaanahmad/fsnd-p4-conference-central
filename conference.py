@@ -609,19 +609,31 @@ class ConferenceApi(remote.Service):
                       url='/tasks/send_session_confirmation_email'
                       )
 
+        taskqueue.add(params={'websafeConferenceKey': \
+                                request.websafeConferenceKey,
+                              'websafeSpeakerKey': request.websafeSpeakerKey,
+                              'speaker': speaker.name},
+                      url='/tasks/set_featured_speaker'
+                      )
+        return request
+
+    @staticmethod
+    def _setFeaturedSpeaker(self, websafeConferenceKey,
+        websafeSpeakerKey, speaker):
         # ---------  add featured speaker to memcache -----------
 
+        conf_key = ndb.Key(urlsafe=websafeConferenceKey)
         # Gets all the sessions for current Conference
         sessions = Session.query(ancestor=conf_key)
         # Filters the returned sessions based on speaker
         sessions = sessions.filter(Session.websafeSpeakerKey ==
-                                   request.websafeSpeakerKey)
+                                   websafeSpeakerKey)
         sessions = sessions.fetch()
 
         # Checks if the more than one sessions were returned for current
         # speaker
         if len(sessions) > 1:
-            featuredSpeakerMessage = speaker.name + " is featured speaker " + \
+            featuredSpeakerMessage = speaker + " is featured speaker " + \
                 "and he will be delivering talk in following sessions. "
             sessionsCSV = ""
             # building a comma separated list of session names where featured
@@ -633,8 +645,6 @@ class ConferenceApi(remote.Service):
                 sessionsCSV[:-2] + "."
 
             memcache.set(MEMCACHE_FEATURED_SPEAKER_KEY, featuredSpeakerMessage)
-
-        return request
 
     # It retrieves the featured speaker and the session names from memcache
     def _getFeaturedSpeaker(self):
