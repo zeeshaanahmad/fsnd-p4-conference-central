@@ -125,7 +125,8 @@ The problem with querying for sessions which do not have type workshop and start
 So in order to handle this scenario, the implemented solution first filters the sessions on type and fetches all the sessions which are not the type of Workshop from datastore, and then the result is iterated to check if each session meets the second inequality condition of starting before 7 PM. Later, the filtered results are returned to client as SessionForms ProtoRPC message containing list of filtered sessions.
 
 ## Task 4 Explanation
-* ### `getFeaturedSpeaker`
+
+### `getFeaturedSpeaker`
 Gets the memcache entry for featured speaker which is updated when a new session is added and number of sessions of that user are more than one
 This has been implemented using task queue. Call to this task queue is made when the session is created.
 
