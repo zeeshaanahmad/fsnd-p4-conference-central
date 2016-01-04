@@ -8,7 +8,10 @@ from google.appengine.api import app_identity
 from google.appengine.api import mail
 
 # Sends confirmation email for Conference addition
+
+
 class SendConfirmationEmailHandler(webapp2.RequestHandler):
+
     def post(self):
         """Send email confirming Conference creation."""
         mail.send_mail(
@@ -22,7 +25,10 @@ class SendConfirmationEmailHandler(webapp2.RequestHandler):
         )
 
 # Sends confirmation email for new Session
+
+
 class SendSessionConfirmationEmailHandler(webapp2.RequestHandler):
+
     def post(self):
         """Send email confirming Conference creation."""
         mail.send_mail(
@@ -36,7 +42,10 @@ class SendSessionConfirmationEmailHandler(webapp2.RequestHandler):
         )
 
 # Sends confirmation email for new speaker
+
+
 class SendSpeakerConfirmationEmailHandler(webapp2.RequestHandler):
+
     def post(self):
         """Send email confirming Conference creation."""
         mail.send_mail(
@@ -50,7 +59,10 @@ class SendSpeakerConfirmationEmailHandler(webapp2.RequestHandler):
         )
 
 # Sets memcache entry for announcement
+
+
 class SetAnnouncementHandler(webapp2.RequestHandler):
+
     def get(self):
         """Set Announcement in Memcache."""
         # TODO 1
@@ -60,6 +72,8 @@ class SetAnnouncementHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/crons/set_announcement', SetAnnouncementHandler),
     ('/tasks/send_confirmation_email', SendConfirmationEmailHandler),
-    ('/tasks/send_session_confirmation_email', SendSessionConfirmationEmailHandler),
-    ('/tasks/send_speaker_confirmation_email', SendSpeakerConfirmationEmailHandler),
+    ('/tasks/send_session_confirmation_email',
+        SendSessionConfirmationEmailHandler),
+    ('/tasks/send_speaker_confirmation_email',
+        SendSpeakerConfirmationEmailHandler),
 ], debug=True)
