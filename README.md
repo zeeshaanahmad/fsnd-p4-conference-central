@@ -48,16 +48,16 @@ Application for Udacity Full Stack Nanodegree - Project 4
 1. Update the value of `application` in `app.yaml` to the app ID you
    have registered in the App Engine admin console and would like to use to host
    your instance of this sample.
-1. Update the values at the top of `settings.py` to
+2. Update the values at the top of `settings.py` to
    reflect the respective client IDs you have registered in the
    [Developer Console][6].
-1. Update the value of CLIENT_ID in `static/js/app.js` to the Web client ID
-1. (Optional) Mark the configuration files as unchanged as follows:
+3. Update the value of CLIENT_ID in `static/js/app.js` to the Web client ID
+4. (Optional) Mark the configuration files as unchanged as follows:
    `$ git update-index --assume-unchanged app.yaml settings.py static/js/app.js`
-1. Run the app with the devserver using `dev_appserver.py DIR`, and ensure it's running by visiting
+5. Run the app with the devserver using `dev_appserver.py DIR`, and ensure it's running by visiting
    your local server's address (by default [localhost:8080][7].)
-1. Generate your client library(ies) with [the endpoints tool][8].
-1. Deploy your application.
+6. Generate your client library(ies) with [the endpoints tool][8].
+7. Deploy your application.
 
 ## Task 1 Explanation
 ### Entities Defined for Task 1
@@ -66,10 +66,19 @@ These entities are added to models.py
 * #### Session
 Session is defined as a child entity of conference. It has further information about its name, speaker, highlights, start time, duration and date.
 It is made child entity of conference because it will be easy to retrieve all the sessions for a conference.
+  * `name`: It stores the session's name information. String type
+  * `websafeSpeakerKey`: It stores the unique id of speaker for this session. speaker's detailed information is stored in Speaker kind. String type
+  * `highlights`: This is repeated property which can store multiple highlights of a session. It can be used for searching sessions with specific highlights. All values are stored as String types.
+  * `startTime`: Indicates the starting time of session. It is stored as integer which takes values in military hours notation e.g. 1705
+  * `duration`: It is an integer which stores the session duration in minutes.
+  * `date`: This property is of type date. Stores the date of the session. Format: yyyy-mm-dd
 
 * #### Speaker
 Speaker entity is defined with its properties as name, interests, organization. Speaker's websafe key is part of Session attributes.
-Speaker is chosen to be as a separate entity to keep further information about speaker and potential future changes to speaker information. It can also help in futrue if the separate speaker profiles are introduced in ConferenceCentral app.
+Speaker is chosen to be as a separate entity to keep further information about speaker and flexibility for potential future changes to speaker information. It can also help in future if the separate speaker profiles are introduced in ConferenceCentral app.
+  * `name`: Name of the speaker. It is a String property.
+  * `interests`: List of interests. Stored as repeated string property.
+  * `organization`: Name of speaker's organization. String property.
 
 ### Methods Defined for Task 1
 These methods have been added to conference.py
@@ -84,7 +93,7 @@ Retrieves all the sessions in a conference based on websafeConferenceKey and sta
 Retrieves all the sessions based on speaker information passed from client and returns as SessionForms object containing resulting sessions.
 
 * #### `createSession`
-Creates the session using information passed from client which contains name, conference key, speaker key, highlights, start time, duration and date. conference key is used as parent key to add new session.
+Creates the session using information passed from client which contains name, conference key, speaker key, highlights, start time, duration and date. conference key is used as parent key to add new session. startTime input parameter takes military hours notation time format e.g. 1705.
 
 ## Task 2 Explanation
 Following methods have been implemented for task 2.
@@ -121,7 +130,7 @@ It generates following index in index.yaml file
 ```
 
 ### Solution for multiple inequality query problem
-The problem with querying for sessions which do not have type workshop and start before 7 PM is that it cannot be queried in one go. The reason is that the App Engine does not not allow multiple inequalities in one query. When attempted to do so, it throws an exception.
+The problem with querying for sessions which do not have type workshop and start before 7 PM is that it cannot be queried in one go. The reason is that the App Engine does not not allow multiple inequalities on different properties in one query. When attempted to do so, it throws an exception. AppEngine only allows multiple inequalities on one property.
 So in order to handle this scenario, the implemented solution first filters the sessions on type and fetches all the sessions which are not the type of Workshop from datastore, and then the result is iterated to check if each session meets the second inequality condition of starting before 7 PM. Later, the filtered results are returned to client as SessionForms ProtoRPC message containing list of filtered sessions.
 
 ## Task 4 Explanation
